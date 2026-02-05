@@ -26,12 +26,6 @@ class Response
             echo 'Headers is: ' .  $this->headers;
         }
          http_response_code($this->responseCode);
-        echo 'Code is : ' . $this->responseCode;
-        echo '<br>';
-        echo 'Body is: ' .  $this->body;
-        echo '<br>';
-        echo 'Port is: ' . $_SERVER['SERVER_PORT'];
-        echo '<br>';
-//        echo var_dump($_SERVER);
+          echo  $this->body;
     }
 }

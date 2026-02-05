@@ -8,14 +8,15 @@ class Route
 
     public string $path;
 
-    public string $return;
+    /** @var callable */
+    public $callback;
 
 
-    public function __construct(string $method, string $path, string $return)
+    public function __construct(string $method, string $path, callable $callback)
     {
         $this->method = $method;
         $this->path = $path;
-        $this->return = $return;
+        $this->callback = $callback;
     }
 
     public function matches(string $method, string $path): bool
