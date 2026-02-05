@@ -8,16 +8,16 @@ use App\Controllers\task\CreateTaskController;
 use App\Controllers\task\TaskOverviewController;
 use Framework\RouteProviderInterface;
 use Framework\Router;
+use Framework\ServiceContainer;
 
 class RouteProvider implements RouteProviderInterface
 {
-    public function register(Router $router): void
+    public function register(Router $router, ServiceContainer $serviceContainer): void
     {
-        $homeController = new HomeController();
-        $taskController = new TaskOverviewController();
-        $aboutPageController = new AboutPageController();
-        $CreateTaskController = new CreateTaskController();
-
+        $homeController = $serviceContainer->get("HomeController");
+        $taskController = $serviceContainer->get("TaskController");
+        $aboutPageController = $serviceContainer->get("AboutPageController");
+        $createTaskController = $serviceContainer->get("CreateTaskController");
 
         $router->addRoute('GET', '/', [$homeController, 'index']);
 
@@ -25,6 +25,6 @@ class RouteProvider implements RouteProviderInterface
 
         $router->addRoute('GET', '/about', [$aboutPageController, 'index']);
 
-        $router->addRoute('GET', '/tasks/create', [$CreateTaskController, 'index']);
+        $router->addRoute('GET', '/tasks/create', [$createTaskController, 'index']);
     }
 }
