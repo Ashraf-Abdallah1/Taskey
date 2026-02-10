@@ -6,6 +6,7 @@ use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
 use App\Controllers\task\CreateTaskController;
 use App\Controllers\task\TaskOverviewController;
+use Framework\ResponseFactory;
 use Framework\ServiceContainer;
 use Framework\ServiceProviderInterface;
 
@@ -14,14 +15,10 @@ class ServiceProvider implements ServiceProviderInterface
 
     public function register(ServiceContainer $serviceContainer): void
     {
-        $homeController = new HomeController();
-        $taskController = new TaskOverviewController();
-        $aboutPageController = new AboutPageController();
-        $createTaskController = new CreateTaskController();
-
-        $serviceContainer->set("HomeController", $homeController);
-        $serviceContainer->set("TaskController", $taskController);
-        $serviceContainer->set("AboutPageController", $aboutPageController);
-        $serviceContainer->set("CreateTaskController", $createTaskController);
+        $responseFactory = new ResponseFactory();
+        $serviceContainer->set(HomeController::class, new HomeController($responseFactory));
+        $serviceContainer->set(TaskOverviewController::class, new TaskOverviewController($responseFactory));
+        $serviceContainer->set(AboutPageController::class, new AboutPageController($responseFactory));
+        $serviceContainer->set(CreateTaskController::class, new CreateTaskController($responseFactory));
     }
 }

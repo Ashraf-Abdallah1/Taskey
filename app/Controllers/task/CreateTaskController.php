@@ -3,11 +3,19 @@
 namespace App\Controllers\task;
 
 use Framework\Response;
+use Framework\ResponseFactory;
 
 class CreateTaskController
 {
+    private ResponseFactory $responseFactory;
+
+    public function __construct(ResponseFactory $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+    }
+
     public function index(): Response
     {
-        return new Response(200, ' create task page', null);
+        return $this->responseFactory->body("create task");
     }
 }

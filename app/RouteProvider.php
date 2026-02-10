@@ -14,10 +14,10 @@ class RouteProvider implements RouteProviderInterface
 {
     public function register(Router $router, ServiceContainer $serviceContainer): void
     {
-        $homeController = $serviceContainer->get("HomeController");
-        $taskController = $serviceContainer->get("TaskController");
-        $aboutPageController = $serviceContainer->get("AboutPageController");
-        $createTaskController = $serviceContainer->get("CreateTaskController");
+        $homeController = $serviceContainer->get(HomeController::class);
+        $taskController = $serviceContainer->get(TaskOverviewController::class);
+        $aboutPageController = $serviceContainer->get(AboutPageController::class);
+        $createTaskController = $serviceContainer->get(CreateTaskController::class);
 
         $router->addRoute('GET', '/', [$homeController, 'index']);
 

@@ -3,11 +3,17 @@
 namespace App\Controllers;
 
 use Framework\Response;
+use Framework\ResponseFactory;
 
 class AboutPageController
 {
+    private ResponseFactory $responseFactory;
+    public function __construct(ResponseFactory $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+    }
     public function index(): Response
     {
-        return new Response(200, 'about page', null);
+        return $this->responseFactory->body("About page");
     }
 }

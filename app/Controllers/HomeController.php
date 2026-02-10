@@ -3,11 +3,18 @@
 namespace App\Controllers;
 
 use Framework\Response;
+use Framework\ResponseFactory;
 
 class HomeController
 {
+    private ResponseFactory $responseFactory;
+    public function __construct(ResponseFactory $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+    }
+
     public function index(): Response
     {
-        return new Response(200, 'HomeController index', null);
+        return $this->responseFactory->body("Home page");
     }
 }

@@ -2,23 +2,29 @@
 
 namespace Framework;
 
+use phpDocumentor\Reflection\Types\This;
+
 class Router
 {
     /** @var Route[] */
     public array $routes;
+    private ResponseFactory $responseFactory;
 
-    public function __construct()
+    public function __construct(ResponseFactory $responseFactory)
     {
+        $this->responseFactory = $responseFactory;
     }
 
     public function dispatch(Request $request): Response
     {
         foreach ($this->routes as $route) {
             if ($route->matches($request->method, $request->path)) {
+                //body -> tekst probleem
                 return call_user_func($route->callback);
+//                return $this->responseFactory->body(call_user_func($route->callback));
             }
         }
-        return new Response(404, '404 page not found' . $request->path, null);
+        return $this->responseFactory->notFound();
     }
 
     /**
