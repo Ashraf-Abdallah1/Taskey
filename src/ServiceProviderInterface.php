@@ -4,5 +4,5 @@ namespace Framework;
 
 interface ServiceProviderInterface
 {
-    public function register(ServiceContainer $serviceContainer): void ;
+    public function register(ServiceContainer $serviceContainer): void;
 }

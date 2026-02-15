@@ -19,9 +19,7 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route->matches($request->method, $request->path)) {
-                //body -> tekst probleem
                 return call_user_func($route->callback);
-//                return $this->responseFactory->body(call_user_func($route->callback));
             }
         }
         return $this->responseFactory->notFound();

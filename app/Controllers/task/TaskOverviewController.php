@@ -16,6 +16,6 @@ class TaskOverviewController
 
     public function index(): Response
     {
-        return $this->responseFactory->body("task overview");
+        return $this->responseFactory->view("tasks/index.html.twig");
     }
 }

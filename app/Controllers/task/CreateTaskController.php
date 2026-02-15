@@ -16,6 +16,6 @@ class CreateTaskController
 
     public function index(): Response
     {
-        return $this->responseFactory->body("create task");
+        return $this->responseFactory->view("tasks/createTask.html.twig");
     }
 }

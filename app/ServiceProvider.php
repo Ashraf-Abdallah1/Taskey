@@ -15,7 +15,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     public function register(ServiceContainer $serviceContainer): void
     {
-        $responseFactory = new ResponseFactory();
+        $responseFactory = $serviceContainer->get(ResponseFactory::class);
         $serviceContainer->set(HomeController::class, new HomeController($responseFactory));
         $serviceContainer->set(TaskOverviewController::class, new TaskOverviewController($responseFactory));
         $serviceContainer->set(AboutPageController::class, new AboutPageController($responseFactory));

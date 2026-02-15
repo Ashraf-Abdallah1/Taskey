@@ -2,15 +2,53 @@
 
 namespace Framework;
 
+use Twig\Environment;
+
 class ResponseFactory
 {
-    public function body(string $text): Response
+    private Environment $twig;
+
+    public function __construct(string $debugMode, string $viewsPath)
     {
-        return new Response(200, $text, null);
+        $loader = new \Twig\Loader\FilesystemLoader($viewsPath);
+        $this->twig = new \Twig\Environment($loader, [
+            $debugMode => true,
+        ]);
     }
+
+    /**
+     * view de
+     *
+     * @param string $template
+     * @param array<mixed> $parameters
+     * @return Response
+     */
+    public function view(string $template, array $parameters = []): Response
+    {
+        $response = new Response(200, '', null);
+
+        try {
+            $response->body = $this->twig->render($template, $parameters);
+            $response->responseCode = 200;
+        } catch (\Exception $e) {
+            $response->responseCode = 500;
+            $response->body = $e->getMessage();
+        }
+        return $response;
+    }
+
 
     public function notFound(): Response
     {
-        return new Response(404, "Page is not found", null);
+        $response = new Response(404, '', null);
+
+        try {
+            $response->responseCode = 404;
+            $response->body = $this->twig->render("404.twig.html");
+        } catch (\Exception $e) {
+            $response->responseCode = 500;
+            $response->body = $e->getMessage();
+        }
+        return $response;
     }
 }

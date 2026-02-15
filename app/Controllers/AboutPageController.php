@@ -14,6 +14,6 @@ class AboutPageController
     }
     public function index(): Response
     {
-        return $this->responseFactory->body("About page");
+        return $this->responseFactory->view('about.html.twig');
     }
 }
