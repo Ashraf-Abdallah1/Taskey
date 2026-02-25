@@ -5,6 +5,7 @@ namespace App;
 use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
 use App\Controllers\task\CreateTaskController;
+use App\Controllers\task\ShowTaskController;
 use App\Controllers\task\TaskOverviewController;
 use Framework\RouteProviderInterface;
 use Framework\Router;
@@ -18,6 +19,7 @@ class RouteProvider implements RouteProviderInterface
         $taskController = $serviceContainer->get(TaskOverviewController::class);
         $aboutPageController = $serviceContainer->get(AboutPageController::class);
         $createTaskController = $serviceContainer->get(CreateTaskController::class);
+        $showTaskController = $serviceContainer->get(ShowTaskController::class);
 
         $router->addRoute('GET', '/', [$homeController, 'index']);
 
@@ -26,5 +28,7 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/about', [$aboutPageController, 'index']);
 
         $router->addRoute('GET', '/tasks/create', [$createTaskController, 'index']);
+
+        $router->addRoute('GET', '/tasks/showTask/(?<id>\d+)', [$showTaskController, 'index']);
     }
 }

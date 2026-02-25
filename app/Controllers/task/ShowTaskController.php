@@ -3,10 +3,11 @@
 namespace App\Controllers\task;
 
 use App\Repositories\RepositoriesInterfaces\TaskRepositoryInterface;
+use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 
-class TaskOverviewController
+class ShowTaskController
 {
     private ResponseFactory $responseFactory;
 
@@ -18,11 +19,12 @@ class TaskOverviewController
         $this->taskRepository = $taskRepository;
     }
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $tasks = $this->taskRepository->all();
-        return $this->responseFactory->view("tasks/index.html.twig", [
-            'tasks' => $tasks
+        $id = (int)$request->get('id');
+        $task = $this->taskRepository->findById($id);
+        return $this->responseFactory->view('tasks/showTask.html.twig', [
+            "task" => $task
         ]);
     }
 }

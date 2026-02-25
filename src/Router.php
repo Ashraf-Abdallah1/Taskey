@@ -19,7 +19,10 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route->matches($request->method, $request->path)) {
-                return call_user_func($route->callback);
+                $request->routeParameters = $route->routeParameters;
+                $callback = $route->callback;
+                $response = $callback($request);
+                return $response;
             }
         }
         return $this->responseFactory->notFound();
