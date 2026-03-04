@@ -8,8 +8,9 @@
 
     {% for task in tasks  %}
     <p>{{ task.title }}</p>
-
     {%  endfor  %}
 
-    <button type="button" class="btn btn-info"><a href="/tasks/create" style="text-decoration: none">create task</a></button>
+    <button class="btn btn-info">
+        <a href="/tasks/create_form"> create task</a>
+    </button>
 {% endblock %}

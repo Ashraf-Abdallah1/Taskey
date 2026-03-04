@@ -12,4 +12,12 @@ interface TaskRepositoryInterface
     public function all(): array;
 
     public function findById(int $id): ?Task;
+
+    public function create(Task $task): Task | null;
+
+    public function update(Task $task): bool;
+
+    public function delete(Task $task): bool;
+
+
 }

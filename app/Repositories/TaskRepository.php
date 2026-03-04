@@ -4,53 +4,24 @@ namespace App\Repositories;
 
 use App\Models\Task;
 use App\Repositories\RepositoriesInterfaces\TaskRepositoryInterface;
+use Framework\Database;
 
 class TaskRepository implements TaskRepositoryInterface
 {
-    /** @var array<int, mixed> */
-    private array $tempTasks = array(
-        array(
-            "id" => 1,
-            "title" => "Form the Fellowship",
-            "description" => "Assemble representatives of the Free Peoples in Rivendell",
-            "priority" => 3,
-            "status" => 4,
-            "progress" => 100,
-            "created_at" => 1008710400,
-            "completed_at" => 1008720400),
-        array(
-            "id" => 2,
-            "title" => "Cross the Misty Mountains",
-            "description" => "Find a safe passage through or around the mountains",
-            "priority" => 2,
-            "status" => 1,
-            "progress" => 50,
-            "created_at" => 1008720400,
-            "completed_at" => null),
-        array(
-            "id" => 3,
-            "title" => "Enter Moria",
-            "description" => "Take the risky path through the Mines of Moria",
-            "priority" => 2,
-            "status" => 3,
-            "progress" => 0,
-            "created_at" => 1008740400,
-            "completed_at" => null)
-    );
+    private Database $database;
+
+    public function __construct(Database $database)
+    {
+        $this->database = $database;
+    }
 
     public function all(): array
     {
+        $stmt = $this->database->run("SELECT * FROM tasks ORDER BY title")->fetchAll();
         $tasks = [];
-        foreach ($this->tempTasks as $tempTask) {
-            $task = new Task();
-            $task->id = $tempTask["id"];
-            $task->title = $tempTask["title"];
-            $task->description = $tempTask["description"];
-            $task->priority = $tempTask["priority"];
-            $task->status = $tempTask["status"];
-            $task->progress = $tempTask["progress"];
-            $task->created_at = $tempTask["created_at"];
-            $task->completed_at = $tempTask["completed_at"];
+
+        foreach ($stmt as $tempTask) {
+            $task = $this->prepareTask($tempTask);
             $tasks[] = $task;
         }
         return $tasks;
@@ -58,21 +29,53 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function findById(int $id): ?Task
     {
-
-        foreach ($this->tempTasks as $tempTask) {
-            if ($tempTask["id"] == $id) {
-                $task = new Task();
-                $task->id = $tempTask["id"];
-                $task->title = $tempTask["title"];
-                $task->description = $tempTask["description"];
-                $task->priority = $tempTask["priority"];
-                $task->status = $tempTask["status"];
-                $task->progress = $tempTask["progress"];
-                $task->created_at = $tempTask["created_at"];
-                $task->completed_at = $tempTask["completed_at"];
-                return $task;
-            }
+        $stmt = $this->database->run("SELECT * FROM tasks WHERE id = :id", ["id" => $id])->fetch();
+        if ($stmt == null) {
+            return null;
         }
-        return null;
+        return $this->prepareTask($stmt);
+    }
+
+    private function prepareTask(mixed $tempTask): Task
+    {
+        $task = new Task();
+        $task->id = $tempTask->id;
+        $task->title = $tempTask->title;
+        $task->description = $tempTask->description;
+        $task->priority = $tempTask->priority;
+        $task->status = $tempTask->status;
+        $task->progress = $tempTask->progress;
+        $task->created_at = $tempTask->created_at;
+        $task->completed_at = $tempTask->completed_at;
+
+        return $task;
+    }
+
+    public function create(Task $task): Task|null
+    {
+        $stmt = $this->database->run('insert into tasks (title, description, priority, status, progress, created_at)
+        values (:title, :description, :priority, :status, :progress, :created_at)', [
+            "title" => $task->title,
+            "description" => $task->description,
+            "priority" => $task->priority,
+            "status" => $task->status,
+            "progress" => $task->progress,
+            "created_at" => $task->created_at,
+        ]);
+        if ($stmt->rowCount() === 0) {
+            return null;
+        }
+        $task->id = $this->database->getLastId();
+        return $task;
+    }
+
+    public function update(Task $task): bool
+    {
+        return false;
+    }
+
+    public function delete(Task $task): bool
+    {
+        return false;
     }
 }

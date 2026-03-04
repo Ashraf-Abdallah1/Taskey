@@ -1,8 +1,87 @@
-{% extends 'partials/base.html.twig' %}
-{% block content %}
-<h1>
-    create task page
-</h1>
-{% endblock%}
+{% extends "partials/base.html.twig" %}
 
-    
+{% set pageTitle = "Tasks" %}
+
+{% set priorities = {
+    0: 'low',
+    1: 'moderate',
+    2: 'high',
+    3: 'urgent'
+} %}
+
+{% set statuses = {
+    0: 'new',
+    1: 'deferred',
+    2: 'in progress',
+    3: 'cancelled',
+    4: 'completed'
+} %}
+
+{% block content %}
+    <form method="POST" action="/tasks/create_form/create">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <strong>Create New Task</strong>
+            </div>
+            <div class="card-body">
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="title">Title</label></div>
+                    <div class="col-sm-9">
+                        <input type="text" id="title" name="title" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="description">Description</label></div>
+                    <div class="col-sm-9 text-break">
+                        <textarea id="description" name="description" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label>Priority</label></div>
+                    <div class="col-sm-9">
+                        {% for value, label in priorities %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="priority" value="{{ value }}" id="priority-{{ label }}">
+                                <label class="form-check-label" for="priority-{{ label }}">
+                                    {{ label|capitalize }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="status" class="form-label">Status</label></div>
+                    <div class="col-sm-9">
+                        <select name="status" id="status" class="form-select">
+                            {% for value, label in statuses %}
+                                <option value="{{ value }}">{{ label|title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="created_at">Date Started</label></div>
+                    <div class="col-sm-9">
+                        <input type="date" id="created_at" name="created_at" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="created_at">Date Completed</label></div>
+                    <div class="col-sm-9">
+                        <input type="date" id="created_at" name="completed_at" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer d-flex gap-2">
+                <input type="submit" value="Create" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+{% endblock %}

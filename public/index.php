@@ -12,6 +12,7 @@ $config = [
     'APP_VIEW_PATH' => '../app/views',
     'APP_ENV' => 'dev',
     'APP_TIMEZONE' => 'UTC',
+    'APP_DB' => 'database.sqlite'
 ];
 try {
     $kernel = new Kernel($config);

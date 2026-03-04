@@ -23,9 +23,11 @@ class Kernel
         $this->configManager = new ConfigManager($config);
         $debugMode = $this->configManager->get('APP_DEBUG');
         $viewPath = $this->configManager->get('APP_VIEW_PATH');
-
+        $dbName = $this->configManager->get('APP_DB');
         $this->serviceContainer = new ServiceContainer();
 
+        $database = new Database(__DIR__ . '/../' . $dbName);
+        $this->serviceContainer->set(Database::class, $database);
         $this->responseFactory = new ResponseFactory($debugMode, $viewPath);
         $this->serviceContainer->set(ResponseFactory::class, $this->responseFactory);
         $this->router = new Router($this->responseFactory);
@@ -44,5 +46,10 @@ class Kernel
     public function registerServices(ServiceProviderInterface $serviceProvider): void
     {
         $serviceProvider->register($this->serviceContainer);
+    }
+
+    public function getDatabase(): Database
+    {
+        return $this->serviceContainer->get(Database::class);
     }
 }

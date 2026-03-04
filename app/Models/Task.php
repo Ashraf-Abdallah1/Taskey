@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use AllowDynamicProperties;
-
-#[AllowDynamicProperties] class Task
+class Task
 {
     public int $id;
 
