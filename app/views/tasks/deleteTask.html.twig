@@ -1,0 +1,9 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+    <p> weet je zeker dat je {{ task.title }} wilt verwijderen</p>
+
+    <form method="POST" action="/tasks/delete_form/delete/{{ task.id }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+{% endblock %}

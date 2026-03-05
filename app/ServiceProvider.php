@@ -5,6 +5,8 @@ namespace App;
 use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
 use App\Controllers\task\CreateTaskController;
+use App\Controllers\task\DeleteTaskController;
+use App\Controllers\task\EditTaskController;
 use App\Controllers\task\ShowTaskController;
 use App\Controllers\task\TaskOverviewController;
 use App\Repositories\TaskRepository;
@@ -27,5 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
         $serviceContainer->set(AboutPageController::class, new AboutPageController($responseFactory));
         $serviceContainer->set(CreateTaskController::class, new CreateTaskController($responseFactory, $taskRepository));
         $serviceContainer->set(ShowTaskController::class, new ShowTaskController($responseFactory, $taskRepository));
+        $serviceContainer->set(EditTaskController::class, new EditTaskController($responseFactory, $taskRepository));
+        $serviceContainer->set(DeleteTaskController::class, new DeleteTaskController($responseFactory, $taskRepository));
     }
 }

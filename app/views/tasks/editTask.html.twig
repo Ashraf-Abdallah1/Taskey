@@ -1,0 +1,14 @@
+{% extends 'partials/base.html.twig' %}
+
+{% set pageTitle = 'edit task' %}
+{% block content %}
+    <h2> Task #{{ task.title }}</h2>
+    <form method="POST" action="edit/{{ task.id }}">
+
+        <label for="title">title</label><input id="title" name="title" value="{{ task.title }}">
+        <br>
+        <label for="description"> description</label><input id="description" name="description" value="{{ task.description }}">
+        <br>
+        <button type="submit" class="btn btn-danger">Edit</button>
+    </form>
+{% endblock %}

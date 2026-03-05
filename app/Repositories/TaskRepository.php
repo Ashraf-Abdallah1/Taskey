@@ -71,11 +71,27 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function update(Task $task): bool
     {
-        return false;
+        $stmt = $this->database->run(
+            'UPDATE tasks SET
+            title = :title,
+            description = :description
+         WHERE id = :id',
+            [
+                "title" => $task->title,
+                "description" => $task->description,
+                "id" => $task->id,
+            ]
+        );
+
+        return $stmt->rowCount() > 0;
     }
 
     public function delete(Task $task): bool
     {
-        return false;
+        $stmt = $this->database->run(
+            'DELETE FROM tasks WHERE id = :id',
+            ["id" => $task->id]
+        );
+        return true;
     }
 }

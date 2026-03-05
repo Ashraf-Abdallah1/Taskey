@@ -8,6 +8,15 @@
 
     {% for task in tasks  %}
     <p>{{ task.title }}</p>
+        <button class="btn btn-info">
+         <a href="/tasks/edit_form/{{ task.id }}">Edit
+         </a>
+        </button>
+
+        <button class="btn btn-info">
+            <a href="/tasks/delete_form/{{ task.id }}">Delete
+            </a>
+        </button>
     {%  endfor  %}
 
     <button class="btn btn-info">
