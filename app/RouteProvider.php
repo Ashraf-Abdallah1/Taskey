@@ -4,6 +4,8 @@ namespace App;
 
 use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
+use App\Controllers\project\ProjectOverviewController;
+use App\Controllers\project\ShowProjectController;
 use App\Controllers\task\CreateTaskController;
 use App\Controllers\task\DeleteTaskController;
 use App\Controllers\task\EditTaskController;
@@ -24,6 +26,8 @@ class RouteProvider implements RouteProviderInterface
         $showTaskController = $serviceContainer->get(ShowTaskController::class);
         $editTaskController = $serviceContainer->get(EditTaskController::class);
         $deleteTaskController = $serviceContainer->get(DeleteTaskController::class);
+        $projectOverviewController = $serviceContainer->get(ProjectOverviewController::class);
+        $showProjectController = $serviceContainer->get(ShowProjectController::class);
 
         $router->addRoute('GET', '/', [$homeController, 'index']);
 
@@ -39,5 +43,7 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/tasks/edit_form/edit/(?<id>\d+)', [$editTaskController, 'update']);
         $router->addRoute('GET', '/tasks/delete_form/(?<id>\d+)', [$deleteTaskController, 'index']);
         $router->addRoute('POST', '/tasks/delete_form/delete/(?<id>\d+)', [$deleteTaskController, 'delete']);
+        $router->addRoute('GET', '/projects', [$projectOverviewController, 'index']);
+        $router->addRoute('GET', '/projects/(?<id>\d+)', [$showProjectController, 'index']);
     }
 }

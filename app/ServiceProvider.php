@@ -4,11 +4,14 @@ namespace App;
 
 use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
+use App\Controllers\project\ProjectOverviewController;
+use App\Controllers\project\ShowProjectController;
 use App\Controllers\task\CreateTaskController;
 use App\Controllers\task\DeleteTaskController;
 use App\Controllers\task\EditTaskController;
 use App\Controllers\task\ShowTaskController;
 use App\Controllers\task\TaskOverviewController;
+use App\Repositories\ProjectRepository;
 use App\Repositories\TaskRepository;
 use Framework\Database;
 use Framework\ResponseFactory;
@@ -23,7 +26,9 @@ class ServiceProvider implements ServiceProviderInterface
         $responseFactory = $serviceContainer->get(ResponseFactory::class);
         $database = $serviceContainer->get(Database::class);
         $serviceContainer->set(TaskRepository::class, new TaskRepository($database));
+        $serviceContainer->set(ProjectRepository::class, new ProjectRepository($database));
         $taskRepository = $serviceContainer->get(TaskRepository::class);
+        $projectRepository = $serviceContainer->get(ProjectRepository::class);
         $serviceContainer->set(HomeController::class, new HomeController($responseFactory));
         $serviceContainer->set(TaskOverviewController::class, new TaskOverviewController($responseFactory, $taskRepository));
         $serviceContainer->set(AboutPageController::class, new AboutPageController($responseFactory));
@@ -31,5 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
         $serviceContainer->set(ShowTaskController::class, new ShowTaskController($responseFactory, $taskRepository));
         $serviceContainer->set(EditTaskController::class, new EditTaskController($responseFactory, $taskRepository));
         $serviceContainer->set(DeleteTaskController::class, new DeleteTaskController($responseFactory, $taskRepository));
+        $serviceContainer->set(ProjectOverviewController::class, new ProjectOverviewController($projectRepository, $responseFactory));
+        $serviceContainer->set(ShowProjectController::class, new ShowProjectController($projectRepository, $responseFactory));
     }
 }

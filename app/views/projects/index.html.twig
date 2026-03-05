@@ -1,0 +1,9 @@
+{% extends 'partials/base.html.twig' %}
+{% block content %}
+    {% for project in projects %}
+        <p>{{ project.title }}</p>
+        <button class="btn btn-info">
+            <a href="/projects/{{ project.id }}">View</a>
+        </button>
+    {% endfor %}
+{% endblock %}
