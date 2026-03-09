@@ -38,6 +38,26 @@ class TaskRepository implements TaskRepositoryInterface
         return $this->prepareTask($stmt);
     }
 
+    /**
+     * @param int $id
+     * @return array<Task>|null
+     */
+    public function findTasksByProject(int $id): array|null
+    {
+        $tasks = [];
+        $stmt = $this->database->run("SELECT * FROM tasks WHERE project_id = :project_id", [
+            "project_id" => $id
+        ])->fetchAll();
+        foreach ($stmt as $task) {
+            $task = $this->prepareTask($task);
+            $tasks[] = $task;
+        }
+        if (!$stmt) {
+            return null;
+        }
+        return $tasks;
+    }
+
     private function prepareTask(mixed $tempTask): Task
     {
         $task = new Task();
@@ -56,14 +76,15 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function create(Task $task): Task|null
     {
-        $stmt = $this->database->run('insert into tasks (title, description, priority, status, progress, created_at)
-        values (:title, :description, :priority, :status, :progress, :created_at)', [
+        $stmt = $this->database->run('insert into tasks (title, description, priority, status, progress, created_at, project_id)
+        values (:title, :description, :priority, :status, :progress, :created_at, :project_id)', [
             "title" => $task->title,
             "description" => $task->description,
             "priority" => $task->priority,
             "status" => $task->status,
             "progress" => $task->progress,
             "created_at" => $task->created_at,
+            "project_id" => $task->project_id
         ]);
         if ($stmt->rowCount() === 0) {
             return null;
@@ -77,11 +98,13 @@ class TaskRepository implements TaskRepositoryInterface
         $stmt = $this->database->run(
             'UPDATE tasks SET
             title = :title,
-            description = :description
-         WHERE id = :id',
+            description = :description,
+             project_id = :project_id
+             WHERE id = :id',
             [
                 "title" => $task->title,
                 "description" => $task->description,
+                "project_id" => $task->project_id,
                 "id" => $task->id,
             ]
         );
@@ -100,11 +123,12 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function findProjectByTask(int $project_id): Project
     {
-        $stmt =  $stmt = $this->database->run("SELECT * FROM projects WHERE id = :id", ['id' => $project_id])->fetch();
+        $stmt = $stmt = $this->database->run("SELECT * FROM projects WHERE id = :id", ['id' => $project_id])->fetch();
         $project = new Project();
         $project->id = $stmt->id;
         $project->title = $stmt->title;
         $project->description = $stmt->description;
         return $project;
     }
+
 }

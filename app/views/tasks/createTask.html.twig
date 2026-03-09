@@ -77,6 +77,19 @@
                         <input type="date" id="created_at" name="completed_at" class="form-control">
                     </div>
                 </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="project_id">Project</label></div>
+                    <div class="col-sm-9">
+                        <select id="project_id" name="project_id" class="form-control">
+                            {% for project in projects %}
+
+                                <option value="{{ project.id }}">{{ project.title}}</option>
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="card-footer d-flex gap-2">

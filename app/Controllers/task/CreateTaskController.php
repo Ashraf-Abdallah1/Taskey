@@ -3,6 +3,8 @@
 namespace App\Controllers\task;
 
 use App\Models\Task;
+use App\Repositories\ProjectRepository;
+use App\Repositories\RepositoriesInterfaces\ProjectRepositoryInterface;
 use App\Repositories\RepositoriesInterfaces\TaskRepositoryInterface;
 use DateTime;
 use Framework\Request;
@@ -14,15 +16,23 @@ class CreateTaskController
     private ResponseFactory $responseFactory;
     private TaskRepositoryInterface $taskRepository;
 
-    public function __construct(ResponseFactory $responseFactory, TaskRepositoryInterface $taskRepository)
+    private ProjectRepositoryInterface $projectRepository;
+
+    public function __construct(ResponseFactory $responseFactory, TaskRepositoryInterface $taskRepository, ProjectRepository $projectRepository)
     {
         $this->responseFactory = $responseFactory;
         $this->taskRepository = $taskRepository;
+        $this->projectRepository = $projectRepository;
     }
 
     public function index(Request $request): Response
     {
-        return $this->responseFactory->view("tasks/createTask.html.twig");
+        $projects = [];
+
+        $projects = $this->projectRepository->all();
+        return $this->responseFactory->view("tasks/createTask.html.twig", [
+            'projects' => $projects,
+        ]);
     }
 
     public function store(Request $request): Response
@@ -33,6 +43,7 @@ class CreateTaskController
         $task->status = (int)$request->get('status');
         $task->priority = (int)$request->get('priority');
         $task->progress = 0;
+        $task->project_id = (int)$request->get('project_id');
         if ($request->get('created_at')) {
             $created_at = DateTime::createFromFormat('Y-m-d', $request->get('created_at'));
             $task->created_at = $created_at ? $created_at->getTimestamp() : (int)date('%s');

@@ -14,7 +14,7 @@ interface TaskRepositoryInterface
 
     public function findById(int $id): ?Task;
 
-    public function create(Task $task): Task | null;
+    public function create(Task $task): Task|null;
 
     public function update(Task $task): bool;
 
@@ -22,5 +22,11 @@ interface TaskRepositoryInterface
 
 
     public function findProjectByTask(int $project_id): Project;
+
+    /**
+     * @param int $id
+     * @return array<Task>|null
+     */
+    public function findTasksByProject(int $id): array|null;
 
 }

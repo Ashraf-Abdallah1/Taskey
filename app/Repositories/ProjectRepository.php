@@ -12,7 +12,6 @@ class ProjectRepository implements RepositoriesInterfaces\ProjectRepositoryInter
 {
     private Database $database;
 
-
     public function __construct(Database $database)
     {
         $this->database = $database;
@@ -60,6 +59,7 @@ class ProjectRepository implements RepositoriesInterfaces\ProjectRepositoryInter
     {
         return false;
     }
+
 
     private function prepearProject(mixed $stmtProject): Project
     {

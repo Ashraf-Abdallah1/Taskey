@@ -34,12 +34,12 @@ class ServiceProvider implements ServiceProviderInterface
         $serviceContainer->set(HomeController::class, new HomeController($responseFactory));
         $serviceContainer->set(TaskOverviewController::class, new TaskOverviewController($responseFactory, $taskRepository));
         $serviceContainer->set(AboutPageController::class, new AboutPageController($responseFactory));
-        $serviceContainer->set(CreateTaskController::class, new CreateTaskController($responseFactory, $taskRepository));
+        $serviceContainer->set(CreateTaskController::class, new CreateTaskController($responseFactory, $taskRepository, $projectRepository));
         $serviceContainer->set(ShowTaskController::class, new ShowTaskController($responseFactory, $taskRepository));
-        $serviceContainer->set(EditTaskController::class, new EditTaskController($responseFactory, $taskRepository));
+        $serviceContainer->set(EditTaskController::class, new EditTaskController($responseFactory, $taskRepository, $projectRepository));
         $serviceContainer->set(DeleteTaskController::class, new DeleteTaskController($responseFactory, $taskRepository));
         $serviceContainer->set(ProjectOverviewController::class, new ProjectOverviewController($projectRepository, $responseFactory));
-        $serviceContainer->set(ShowProjectController::class, new ShowProjectController($projectRepository, $responseFactory));
+        $serviceContainer->set(ShowProjectController::class, new ShowProjectController($projectRepository, $responseFactory, $taskRepository));
         $serviceContainer->set(CreateProjectController::class, new CreateProjectController($responseFactory, $projectRepository));
     }
 }

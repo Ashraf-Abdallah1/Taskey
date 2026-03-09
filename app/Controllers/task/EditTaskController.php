@@ -2,6 +2,7 @@
 
 namespace App\Controllers\task;
 
+use App\Repositories\RepositoriesInterfaces\ProjectRepositoryInterface;
 use App\Repositories\RepositoriesInterfaces\TaskRepositoryInterface;
 use Framework\Request;
 use Framework\Response;
@@ -13,18 +14,25 @@ class EditTaskController
 
     private TaskRepositoryInterface $taskRepository;
 
-    public function __construct(ResponseFactory $responseFactory, TaskRepositoryInterface $taskRepository)
+    private ProjectRepositoryInterface $projectRepository;
+
+    public function __construct(ResponseFactory $responseFactory, TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository)
     {
         $this->responseFactory = $responseFactory;
         $this->taskRepository = $taskRepository;
+        $this->projectRepository = $projectRepository;
     }
 
     public function index(Request $request): Response
     {
         $id = (int)$request->get('id');
         $task = $this->taskRepository->findById($id);
+        $projects = $this->projectRepository->all();
         return $this->responseFactory->view('tasks/editTask.html.twig', [
-                'task' => $task]);
+            'task' => $task,
+            'projects' => $projects,
+
+        ]);
     }
 
     public function update(Request $request): Response
@@ -33,6 +41,7 @@ class EditTaskController
         $task = $this->taskRepository->findById($id);
         $task->title = $request->get('title');
         $task->description = $request->get('description');
+        $task->project_id = (int)$request->get('project_id');
 
         $this->taskRepository->update($task);
 
