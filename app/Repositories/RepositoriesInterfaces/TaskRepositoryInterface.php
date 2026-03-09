@@ -2,6 +2,7 @@
 
 namespace App\Repositories\RepositoriesInterfaces;
 
+use App\Models\Project;
 use App\Models\Task;
 
 interface TaskRepositoryInterface
@@ -19,5 +20,7 @@ interface TaskRepositoryInterface
 
     public function delete(Task $task): bool;
 
+
+    public function findProjectByTask(int $project_id): Project;
 
 }

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
+use App\Controllers\project\CreateProjectController;
 use App\Controllers\project\ProjectOverviewController;
 use App\Controllers\project\ShowProjectController;
 use App\Controllers\task\CreateTaskController;
@@ -20,15 +21,16 @@ use Framework\ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface
 {
-
     public function register(ServiceContainer $serviceContainer): void
     {
         $responseFactory = $serviceContainer->get(ResponseFactory::class);
         $database = $serviceContainer->get(Database::class);
         $serviceContainer->set(TaskRepository::class, new TaskRepository($database));
         $serviceContainer->set(ProjectRepository::class, new ProjectRepository($database));
+
         $taskRepository = $serviceContainer->get(TaskRepository::class);
         $projectRepository = $serviceContainer->get(ProjectRepository::class);
+        $serviceContainer->set(ProjectRepository::class, new ProjectRepository($database));
         $serviceContainer->set(HomeController::class, new HomeController($responseFactory));
         $serviceContainer->set(TaskOverviewController::class, new TaskOverviewController($responseFactory, $taskRepository));
         $serviceContainer->set(AboutPageController::class, new AboutPageController($responseFactory));
@@ -38,5 +40,6 @@ class ServiceProvider implements ServiceProviderInterface
         $serviceContainer->set(DeleteTaskController::class, new DeleteTaskController($responseFactory, $taskRepository));
         $serviceContainer->set(ProjectOverviewController::class, new ProjectOverviewController($projectRepository, $responseFactory));
         $serviceContainer->set(ShowProjectController::class, new ShowProjectController($projectRepository, $responseFactory));
+        $serviceContainer->set(CreateProjectController::class, new CreateProjectController($responseFactory, $projectRepository));
     }
 }

@@ -19,6 +19,7 @@ class Task
     public ?int $completed_at;
 
     public int $progress;
+    public int $project_id;
 
     public function __construct()
     {
@@ -29,5 +30,6 @@ class Task
         $this->created_at = time();
         $this->completed_at = null;
         $this->progress = 0;
+        $this->project_id = 0;
     }
 }

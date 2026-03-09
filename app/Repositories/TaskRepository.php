@@ -2,9 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\Project;
 use App\Models\Task;
 use App\Repositories\RepositoriesInterfaces\TaskRepositoryInterface;
 use Framework\Database;
+use phpDocumentor\Reflection\Types\This;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -47,6 +49,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task->progress = $tempTask->progress;
         $task->created_at = $tempTask->created_at;
         $task->completed_at = $tempTask->completed_at;
+        $task->project_id = $tempTask->project_id;
 
         return $task;
     }
@@ -93,5 +96,15 @@ class TaskRepository implements TaskRepositoryInterface
             ["id" => $task->id]
         );
         return true;
+    }
+
+    public function findProjectByTask(int $project_id): Project
+    {
+        $stmt =  $stmt = $this->database->run("SELECT * FROM projects WHERE id = :id", ['id' => $project_id])->fetch();
+        $project = new Project();
+        $project->id = $stmt->id;
+        $project->title = $stmt->title;
+        $project->description = $stmt->description;
+        return $project;
     }
 }

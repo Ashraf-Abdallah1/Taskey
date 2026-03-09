@@ -3,12 +3,15 @@
 namespace App\Repositories;
 
 use App\Models\Project;
+use App\Models\Task;
 use App\Repositories\RepositoriesInterfaces\ProjectRepositoryInterface;
+use App\Repositories\RepositoriesInterfaces\TaskRepositoryInterface;
 use Framework\Database;
 
 class ProjectRepository implements RepositoriesInterfaces\ProjectRepositoryInterface
 {
     private Database $database;
+
 
     public function __construct(Database $database)
     {
@@ -38,9 +41,14 @@ class ProjectRepository implements RepositoriesInterfaces\ProjectRepositoryInter
         return $this->prepearProject($stmt);
     }
 
-    public function insert(Project $project): Project
+    public function insert(Project $project): Project|null
     {
-        return new Project();
+        $stmt = $this->database->run("INSERT INTO Projects (title, description) VALUES (:title, :description)", [
+            'title' => $project->title,
+            'description' => $project->description
+        ])->fetch();
+        $project->id = $this->database->getLastId();
+        return $project;
     }
 
     public function update(Project $project): bool
