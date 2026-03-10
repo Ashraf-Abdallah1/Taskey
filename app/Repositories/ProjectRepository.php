@@ -57,6 +57,10 @@ class ProjectRepository implements RepositoriesInterfaces\ProjectRepositoryInter
 
     public function delete(Project $project): bool
     {
+        $stmt = $this->database->run("DELETE FROM Projects WHERE id = :id", ['id' => $project->id]);
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
         return false;
     }
 

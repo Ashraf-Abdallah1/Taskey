@@ -1,0 +1,7 @@
+{% extends 'partials/base.html.twig' %}
+{% block content %}
+<form method="POST" action="/tags/create_form/create">
+    <label for="title">Title</label><input type="text" name="title" id="title">
+    <button type="submit" class="btn btn-info">create</button>
+</form>
+{% endblock %}

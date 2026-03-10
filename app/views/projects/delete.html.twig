@@ -1,0 +1,12 @@
+{% extends 'partials/base.twig.html' %}
+
+{% block content %}
+    <p> weet je zeker dat je het wil verwijderen{{ project.title }}</p>
+
+
+    <form method="POST" action="">
+        <button class="btn btn-info">
+            Delete
+        </button>
+    </form>
+{% endblock %}

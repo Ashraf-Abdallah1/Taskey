@@ -5,8 +5,11 @@ namespace App;
 use App\Controllers\AboutPageController;
 use App\Controllers\HomeController;
 use App\Controllers\project\CreateProjectController;
+use App\Controllers\project\DeleteProjectController;
 use App\Controllers\project\ProjectOverviewController;
 use App\Controllers\project\ShowProjectController;
+use App\Controllers\tag\CreateTagController;
+use App\Controllers\tag\TagOverviewController;
 use App\Controllers\task\CreateTaskController;
 use App\Controllers\task\DeleteTaskController;
 use App\Controllers\task\EditTaskController;
@@ -30,6 +33,9 @@ class RouteProvider implements RouteProviderInterface
         $projectOverviewController = $serviceContainer->get(ProjectOverviewController::class);
         $showProjectController = $serviceContainer->get(ShowProjectController::class);
         $createProjectController = $serviceContainer->get(CreateProjectController::class);
+        $deleteProjectController = $serviceContainer->get(DeleteProjectController::class);
+        $tagOverviewController = $serviceContainer->get(TagOverviewController::class);
+        $createTagController = $serviceContainer->get(CreateTagController::class);
 
         $router->addRoute('GET', '/', [$homeController, 'index']);
 
@@ -49,5 +55,9 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/projects/(?<id>\d+)', [$showProjectController, 'index']);
         $router->addRoute('GET', '/projects/create_form', [$createProjectController, 'index']);
         $router->addRoute('POST', '/projects/create_form/create', [$createProjectController, 'store']);
+        $router->addRoute("GET", "/projects/delete_form", [$deleteProjectController, 'index']);
+        $router->addRoute('GET', "/tags", [$tagOverviewController, 'index']);
+        $router->addRoute('GET', "/tags/create_form", [$createTagController, 'index']);
+        $router->addRoute('POST', "/tags/create_form/create", [$createTagController, 'store']);
     }
 }

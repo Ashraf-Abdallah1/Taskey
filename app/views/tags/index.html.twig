@@ -1,0 +1,10 @@
+{% extends 'partials/base.html.twig' %}
+{% block content %}
+    {% for tag in tags %}
+        {{ tag.title }}
+        <br>
+    {% endfor %}
+    <button class="btn btn-info">
+        <a href="/tags/create_form">create</a>
+    </button>
+{% endblock %}
